@@ -18,14 +18,8 @@ window.onload = function() {
     uri = uri.substring(0, uri.lastIndexOf('/'));
     socket = new WebSocket(uri);
 
-    socket.onerror = function(error) {
-      chatapp.core.output("error", error);
-    };
-
-    socket.onopen = function(event) {
-      chatapp.core.output("opened", "Connected to " + event.currentTarget.url);
-    };
-
+    socket.onerror = chatapp.core.onerror;
+    socket.onopen = chatapp.core.onopen;
     socket.onmessage = chatapp.core.onmessage;
 
     socket.onclose = function(event) {

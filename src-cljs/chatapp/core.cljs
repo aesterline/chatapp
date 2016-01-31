@@ -8,3 +8,10 @@
 
 (defn ^:export onmessage [event]
   (output "received" (str "<<< " (.-data event))))
+
+(defn ^:export onerror [error]
+  (output "error" error))
+
+(defn ^:export onopen [event]
+  (let [current-target (.-currentTarget event)]
+    (output "opened" (str "Connected to " (.-url current-target)))))
