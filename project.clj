@@ -1,13 +1,21 @@
 (defproject chatapp "0.1.0-SNAPSHOT"
   :description "Simple clojurescript chat app"
+  :source-paths ["src-clj"]
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[compojure "1.4.0"]
                  [environ "1.0.2"]
                  [org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.7.228"]
                  [org.immutant/web "2.1.2"]
                  [ring/ring-core "1.4.0"]]
+  :plugins [[lein-cljsbuild "1.1.2"]]
+  :hooks [leiningen.cljsbuild]
+  :cljsbuild {:builds [{:source-paths ["src-cljs"]
+                        :compiler {:output-to "resources/public/js/main.js"
+                                   :optimizations :whitespace
+                                   :pretty-print true}}]}
   :main ^:skip-aot chatapp.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
