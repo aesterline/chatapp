@@ -7,14 +7,10 @@ window.onload = function() {
 
   var socket;
 
-  function output(style, text){
-    messages.innerHTML += "<br/><span class='" + style + "'>" + text + "</span>";
-  }
-
   openBtn.onclick = function(e) {
     e.preventDefault();
     if (socket !== undefined) {
-      output("error", "Already connected");
+      chatapp.core.output("error", "Already connected");
       return;
     }
 
@@ -23,37 +19,34 @@ window.onload = function() {
     socket = new WebSocket(uri);
 
     socket.onerror = function(error) {
-      output("error", error);
+      chatapp.core.output("error", error);
     };
 
     socket.onopen = function(event) {
-      output("opened", "Connected to " + event.currentTarget.url);
+      chatapp.core.output("opened", "Connected to " + event.currentTarget.url);
     };
 
-    socket.onmessage = function(event) {
-      var message = event.data;
-      output("received", "<<< " + message);
-    };
+    socket.onmessage = chatapp.core.onmessage;
 
     socket.onclose = function(event) {
-      output("closed", "Disconnected: " + event.code + " " + event.reason);
+      chatapp.core.output("closed", "Disconnected: " + event.code + " " + event.reason);
       socket = undefined;
     };
   };
 
   sendBtn.onclick = function(e) {
     if (socket == undefined) {
-      output("error", 'Not connected');
+      chatapp.core.output("error", 'Not connected');
       return;
     }
     var text = document.getElementById("input").value;
     socket.send(text);
-    output("sent", ">>> " + text);
+    chatapp.core.output("sent", ">>> " + text);
   };
 
   closeBtn.onclick = function(e) {
     if (socket == undefined) {
-      output('error', 'Not connected');
+      chatapp.core.output('error', 'Not connected');
       return;
     }
     socket.close(1000, "Close button clicked");
