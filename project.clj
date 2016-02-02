@@ -1,6 +1,6 @@
 (defproject chatapp "0.1.0-SNAPSHOT"
   :description "Simple clojurescript chat app"
-  :source-paths ["src-clj"]
+  :source-paths ["src/clj"]
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
@@ -19,7 +19,7 @@
 
   :cljsbuild {:builds
               {:app
-               {:source-paths ["src-cljs"]
+               {:source-paths ["src/cljs"]
 
                 :figwheel     true
                 ;; Alternatively, you can configure a function to run every time figwheel reloads.
