@@ -8,7 +8,7 @@
                  [environ "1.0.2"]
                  [http-kit "2.1.18"]
                  [org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.7.228"]
+                 [org.clojure/clojurescript "1.7.228" :scope "provided"]
                  [ring/ring-core "1.4.0"]]
   :plugins [[lein-cljsbuild "1.1.2"]]
   :hooks [leiningen.cljsbuild]
