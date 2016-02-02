@@ -11,3 +11,5 @@ pom.xml.asc
 .hg/
 /resources/public/js/main.js
 *.DS_Store
+*.log
+/resources/public/js/out/

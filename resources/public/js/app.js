@@ -16,6 +16,8 @@ window.onload = function() {
 
     var uri = "ws://" + location.host + location.pathname;
     uri = uri.substring(0, uri.lastIndexOf('/'));
+    uri += '/ws';
+    console.log(uri);
     socket = new WebSocket(uri);
 
     socket.onerror = chatapp.core.onerror;
