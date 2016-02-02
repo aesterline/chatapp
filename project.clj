@@ -10,8 +10,13 @@
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228" :scope "provided"]
                  [ring/ring-core "1.4.0"]]
+
   :plugins [[lein-cljsbuild "1.1.2"]]
+
+  :clean-targets ^{:protect false} [:target-path :compile-path "resources/public/js/main.js"]
+
   :hooks [leiningen.cljsbuild]
+
   :cljsbuild {:builds [{:source-paths ["src-cljs"]
                         :compiler {:output-to "resources/public/js/main.js"
                                    :optimizations :whitespace
