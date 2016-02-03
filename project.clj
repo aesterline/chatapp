@@ -78,7 +78,6 @@
                                :compiler
                                {:output-to     "resources/public/js/compiled/testable.js"
                                 :main          'chatapp.test-runner
-                                :target        :nodejs
                                 :optimizations :none}}}}}}
 
   :main ^:skip-aot chatapp.core
