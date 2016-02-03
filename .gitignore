@@ -14,3 +14,4 @@ pom.xml.asc
 *.log
 /resources/public/js/out/
 /resources/public/js/compiled/
+/out/

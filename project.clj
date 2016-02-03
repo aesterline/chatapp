@@ -1,6 +1,5 @@
 (defproject chatapp "0.1.0-SNAPSHOT"
   :description "Simple clojurescript chat app"
-  :source-paths ["src/clj"]
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
@@ -11,11 +10,13 @@
                  [org.clojure/clojurescript "1.7.228" :scope "provided"]
                  [ring/ring-core "1.4.0"]]
 
-  :plugins [[lein-cljsbuild "1.1.2"]]
+  :plugins [[lein-cljsbuild "1.1.1"]
+            [lein-pprint "1.1.1"]]
+
+  :source-paths ["src/clj" "src/cljs" "dev"]
+  :test-paths ["test/clj"]
 
   :clean-targets ^{:protect false} [:target-path :compile-path "resources/public/js/compiled"]
-
-  :hooks [leiningen.cljsbuild]
 
   :cljsbuild {:builds
               {:app
@@ -60,13 +61,15 @@
 
              :server-logfile "log/figwheel.log"}
 
+  :doo {:build "test"}
+
   :profiles {:dev
-             {:dependencies [[figwheel "0.5.0-4"]
-                             [figwheel-sidecar "0.5.0-4"]
+             {:dependencies [[figwheel "0.5.0-6"]
+                             [figwheel-sidecar "0.5.0-6"]
                              [com.cemerick/piggieback "0.2.1"]
                              [org.clojure/tools.nrepl "0.2.12"]]
 
-              :plugins      [[lein-figwheel "0.5.0-2"]
+              :plugins      [[lein-figwheel "0.5.0-6"]
                              [lein-doo "0.1.6"]]
 
               :cljsbuild    {:builds
@@ -74,7 +77,8 @@
                               {:source-paths ["src/cljs" "test/cljs"]
                                :compiler
                                {:output-to     "resources/public/js/compiled/testable.js"
-                                :main          chatapp.test-runner
+                                :main          'chatapp.test-runner
+                                :target        :nodejs
                                 :optimizations :none}}}}}}
 
   :main ^:skip-aot chatapp.core
