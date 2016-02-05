@@ -1,7 +1,10 @@
 (ns chatapp.core)
 
+(defn- element [name]
+  (.getElementById js/document name))
+
 (defn output [style text]
-  (let [messages         (.getElementById js/document "messages")
+  (let [messages         (element "messages")
         current-messages (.-innerHTML messages)
         current-message  (str "<br/><span class='" style "'>" text "</span>")]
     (set! (.-innerHTML messages) (str current-messages current-message))))
@@ -22,8 +25,6 @@
 (def socket (atom nil))
 
 (defn oonclick [event]
-  (output "click" "Button Clicked")
-
   (.preventDefault event)
 
   (let [uri       (str "ws://" (.-host js/location) "/ws")
@@ -36,7 +37,7 @@
     (reset! socket websocket)))
 
 (defn sonclick [event]
-  (let [input (.getElementById js/document "input")
+  (let [input (element "input")
         text  (.-value input)]
     (.send @socket text)
     (output "sent" (str ">>> " text))))
@@ -45,9 +46,9 @@
   (.close @socket 1000 "Close button clicked"))
 
 (defn onload []
-  (let [openBtn  (.getElementById js/document "open")
-        sendBtn  (.getElementById js/document "send")
-        closeBtn (.getElementById js/document "close")]
+  (let [openBtn  (element "open")
+        sendBtn  (element "send")
+        closeBtn (element "close")]
     (set! (.-onclick openBtn) oonclick)
     (set! (.-onclick sendBtn) sonclick)
     (set! (.-onclick closeBtn) conclick)))
