@@ -43,3 +43,13 @@
 
 (defn ^:export conclick [event]
   (.close @socket 1000 "Close button clicked"))
+
+(defn onload []
+  (let [openBtn  (.getElementById js/document "open")
+        sendBtn  (.getElementById js/document "send")
+        closeBtn (.getElementById js/document "close")]
+    (set! (.-onclick openBtn) oonclick)
+    (set! (.-onclick sendBtn) sonclick)
+    (set! (.-onclick closeBtn) conclick)))
+
+(set! (.-onload js/window) onload)
