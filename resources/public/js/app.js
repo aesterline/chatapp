@@ -3,48 +3,14 @@ window.onload = function() {
   var openBtn = document.getElementById('open');
   var sendBtn = document.getElementById('send');
   var closeBtn = document.getElementById('close');
-  var messages = document.getElementById('messages');
-
-  var socket;
 
   openBtn.onclick = function(e) {
-    e.preventDefault();
-    if (socket !== undefined) {
-      chatapp.core.output("error", "Already connected");
-      return;
-    }
-
-    var uri = "ws://" + location.host + location.pathname;
-    uri = uri.substring(0, uri.lastIndexOf('/'));
-    uri += '/ws';
-    console.log(uri);
-    socket = new WebSocket(uri);
-
-    socket.onerror = chatapp.core.onerror;
-    socket.onopen = chatapp.core.onopen;
-    socket.onmessage = chatapp.core.onmessage;
-
-    socket.onclose = function(event) {
-      chatapp.core.output("closed", "Disconnected: " + event.code + " " + event.reason);
-      socket = undefined;
-    };
+    console.log("click");
+    chatapp.core.oonclick(e);
   };
 
-  sendBtn.onclick = function(e) {
-    if (socket == undefined) {
-      chatapp.core.output("error", 'Not connected');
-      return;
-    }
-    var text = document.getElementById("input").value;
-    socket.send(text);
-    chatapp.core.output("sent", ">>> " + text);
-  };
+  sendBtn.onclick = chatapp.core.sonclick;
 
-  closeBtn.onclick = function(e) {
-    if (socket == undefined) {
-      chatapp.core.output('error', 'Not connected');
-      return;
-    }
-    socket.close(1000, "Close button clicked");
-  };
+  closeBtn.onclick = chatapp.core.conclick;
+
 };

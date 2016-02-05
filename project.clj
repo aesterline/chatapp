@@ -8,6 +8,7 @@
                  [http-kit "2.1.18"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228" :scope "provided"]
+                 [reagent "0.6.0-alpha"]
                  [ring/ring-core "1.4.0"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]
