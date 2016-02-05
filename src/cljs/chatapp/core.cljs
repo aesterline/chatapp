@@ -1,18 +1,18 @@
 (ns chatapp.core)
 
-(defn ^:export output [style text]
+(defn output [style text]
   (let [messages         (.getElementById js/document "messages")
         current-messages (.-innerHTML messages)
         current-message  (str "<br/><span class='" style "'>" text "</span>")]
     (set! (.-innerHTML messages) (str current-messages current-message))))
 
-(defn ^:export onmessage [event]
+(defn onmessage [event]
   (output "received" (str "<<< " (.-data event))))
 
-(defn ^:export onerror [error]
+(defn onerror [error]
   (output "error" error))
 
-(defn ^:export onopen [event]
+(defn onopen [event]
   (let [current-target (.-currentTarget event)]
     (output "opened" (str "Connected to " (.-url current-target)))))
 
@@ -21,7 +21,7 @@
 
 (def socket (atom nil))
 
-(defn ^:export oonclick [event]
+(defn oonclick [event]
   (output "click" "Button Clicked")
 
   (.preventDefault event)
@@ -35,13 +35,13 @@
 
     (reset! socket websocket)))
 
-(defn ^:export sonclick [event]
+(defn sonclick [event]
   (let [input (.getElementById js/document "input")
         text  (.-value input)]
     (.send @socket text)
     (output "sent" (str ">>> " text))))
 
-(defn ^:export conclick [event]
+(defn conclick [event]
   (.close @socket 1000 "Close button clicked"))
 
 (defn onload []
