@@ -1,26 +1,36 @@
-(ns chatapp.core)
+(ns chatapp.core
+  (:require [reagent.core :as r]))
 
 (defn- element [name]
   (.getElementById js/document name))
 
-(defn output [style text]
-  (let [messages         (element "messages")
-        current-messages (.-innerHTML messages)
-        current-message  (str "<br/><span class='" style "'>" text "</span>")]
-    (set! (.-innerHTML messages) (str current-messages current-message))))
+(def app-state (r/atom {:messages [{:style "init" :message "initial message"}]}))
+
+(defn add-message! [style message]
+  (swap! app-state (fn [state] (update-in state [:messages] conj {:style style :message message}))))
+
+(defn message [message]
+  [:div
+   [:span {:class (:style message)}
+    (:message message)]])
+
+(defn message-list []
+  [:div
+   (for [m (:messages @app-state)]
+     (message m))])
 
 (defn onmessage [event]
-  (output "received" (str "<<< " (.-data event))))
+  (add-message! "received" (str "<<< " (.-data event))))
 
 (defn onerror [error]
-  (output "error" error))
+  (add-message! "error" error))
 
 (defn onopen [event]
   (let [current-target (.-currentTarget event)]
-    (output "opened" (str "Connected to " (.-url current-target)))))
+    (add-message! "opened" (str "Connected to " (.-url current-target)))))
 
 (defn onclose [event]
-  (output "closed" (str "Disconnected: " (.-code event) " " (.-reason event))))
+  (add-message! "closed" (str "Disconnected: " (.-code event) " " (.-reason event))))
 
 (def socket (atom nil))
 
@@ -40,7 +50,7 @@
   (let [input (element "input")
         text  (.-value input)]
     (.send @socket text)
-    (output "sent" (str ">>> " text))))
+    (add-message! "sent" (str ">>> " text))))
 
 (defn conclick [event]
   (.close @socket 1000 "Close button clicked"))
@@ -54,3 +64,7 @@
     (set! (.-onclick closeBtn) conclick)))
 
 (set! (.-onload js/window) onload)
+
+(r/render-component
+ [message-list]
+ (element "messages"))
