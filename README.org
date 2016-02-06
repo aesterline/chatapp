@@ -1,0 +1,35 @@
+* chatapp
+  Simple chat application created in order to learn ClojureScript.
+
+** Usage
+
+  To run, start the server process with the following command.
+
+  #+BEGIN_EXAMPLE
+  lein figwheel
+  #+END_EXAMPLE
+
+  After starting the server, connect your browser to http://localhost:3449/index.html. Happy chatting.
+
+** What's Next
+
+   - Allow additional clients to connect.
+   - Style the chat window
+
+** Learning Resources
+
+*** General ClojureScript
+
+    - http://lukevanderhart.com/2011/09/30/using-javascript-and-clojurescript.html
+    - http://www.spacjer.com/blog/2014/09/12/clojurescript-javascript-interop/
+
+*** ClojureScript Development Environment
+
+    - https://github.com/plexus/chestnut
+    - https://github.com/bensu/doo
+    - https://github.com/emezeske/lein-cljsbuild
+
+*** Reagent
+
+    - https://github.com/reagent-project/reagent
+    - https://github.com/jonase/reagent-tutorial
