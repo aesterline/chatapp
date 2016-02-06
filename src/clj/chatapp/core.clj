@@ -7,11 +7,20 @@
    [org.httpkit.server :as server])
   (:gen-class))
 
+(def clients (atom #{}))
+
+(defn- message-received [msg]
+  (doseq [client @clients]
+    (server/send! client (apply str (reverse msg)))))
+
 (defn handler [request]
   (server/with-channel request channel
-    (server/on-close channel   (fn [status] (println "channel closed: " status)))
+    (swap! clients conj channel)
+    (server/on-close channel   (fn [status] (swap! clients disj channel)))
     (server/on-receive channel (fn [data] ;; echo it back
-                                 (server/send! channel (apply str (reverse data)))))))
+                                 (future
+                                   (Thread/sleep 5000)
+                                   (message-received data))))))
 
 (defroutes routes
   (GET "/ws" [] handler)
