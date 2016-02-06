@@ -9,16 +9,6 @@
 (defn add-message! [style message]
   (swap! app-state (fn [state] (update-in state [:messages] conj {:style style :message message}))))
 
-(defn message [message]
-  [:div
-   [:span {:class (:style message)}
-    (:message message)]])
-
-(defn message-list []
-  [:div
-   (for [m (:messages @app-state)]
-     (message m))])
-
 (defn onmessage [event]
   (add-message! "received" (str "<<< " (.-data event))))
 
@@ -55,16 +45,25 @@
 (defn conclick [event]
   (.close @socket 1000 "Close button clicked"))
 
-(defn onload []
-  (let [openBtn  (element "open")
-        sendBtn  (element "send")
-        closeBtn (element "close")]
-    (set! (.-onclick openBtn) oonclick)
-    (set! (.-onclick sendBtn) sonclick)
-    (set! (.-onclick closeBtn) conclick)))
+(defn message [message]
+  [:div
+   [:span {:class (:style message)}
+    (:message message)]])
 
-(set! (.-onload js/window) onload)
+(defn message-list []
+  [:div
+   (for [m (:messages @app-state)]
+     (message m))])
 
-(r/render-component
- [message-list]
- (element "messages"))
+(defn demo []
+  [:div
+   [:input {:type "text" :id "input" :value "Enter text to reverse!"}]
+   [:button {:type "button" :on-click oonclick} "Open"]
+   [:button {:type "button" :on-click sonclick} "Send"]
+   [:button {:type "button" :on-click conclick} "Close"]
+   [message-list]])
+
+(defn start []
+  (r/render-component
+   [demo]
+   (.getElementById js/document "root")))
