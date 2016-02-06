@@ -21,9 +21,7 @@
 
 (def socket (atom nil))
 
-(defn oonclick [event]
-  (.preventDefault event)
-
+(defn connect []
   (let [uri       (str "ws://" (.-host js/location) "/ws")
         websocket (js/WebSocket. uri)]
     (set! (.-onerror websocket) onerror)
@@ -59,9 +57,6 @@
                 :placeholder "Enter text to reverse!"
                 :on-change   #(reset! val (-> % .-target .-value))}]
        [:button {:type     "button"
-                 :on-click oonclick}
-        "Open"]
-       [:button {:type     "button"
                  :on-click (partial sonclick @val)}
         "Send"]
        [:button {:type "button" :on-click conclick} "Close"]
@@ -72,4 +67,5 @@
    [:div
     [:h1 "WebSocket Demo"]
     [demo]]
-   (.getElementById js/document "root")))
+   (.getElementById js/document "root"))
+  (connect))
