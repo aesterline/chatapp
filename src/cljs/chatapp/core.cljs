@@ -69,5 +69,7 @@
 
 (defn start []
   (r/render-component
-   [demo]
+   [:div
+    [:h1 "WebSocket Demo"]
+    [demo]]
    (.getElementById js/document "root")))
