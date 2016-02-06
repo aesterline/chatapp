@@ -13,8 +13,12 @@
 
 ** What's Next
 
-   - Allow additional clients to connect.
+   - Allow additional clients to connect
    - Style the chat window
+   - Set up a build on [[https://travis-ci.org/][Travis CI]]
+   - Understand what tests should be written and write them
+   - Deploy
+   - Add persistence
 
 ** Resources
 
