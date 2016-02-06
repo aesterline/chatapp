@@ -1,9 +1,6 @@
 (ns chatapp.core
   (:require [reagent.core :as r]))
 
-(defn- element [name]
-  (.getElementById js/document name))
-
 (def app-state (r/atom {:messages [{:style "init" :message "initial message"}]}))
 
 (defn add-message! [style message]
@@ -36,11 +33,9 @@
 
     (reset! socket websocket)))
 
-(defn sonclick [event]
-  (let [input (element "input")
-        text  (.-value input)]
-    (.send @socket text)
-    (add-message! "sent" (str ">>> " text))))
+(defn sonclick [text event]
+  (.send @socket text)
+  (add-message! "sent" (str ">>> " text)))
 
 (defn conclick [event]
   (.close @socket 1000 "Close button clicked"))
@@ -56,12 +51,21 @@
      (message m))])
 
 (defn demo []
-  [:div
-   [:input {:type "text" :id "input" :value "Enter text to reverse!"}]
-   [:button {:type "button" :on-click oonclick} "Open"]
-   [:button {:type "button" :on-click sonclick} "Send"]
-   [:button {:type "button" :on-click conclick} "Close"]
-   [message-list]])
+  (let [val (r/atom "")]
+    (fn []
+      [:div
+       [:input {:type        "text"
+                :value       @val
+                :placeholder "Enter text to reverse!"
+                :on-change   #(reset! val (-> % .-target .-value))}]
+       [:button {:type     "button"
+                 :on-click oonclick}
+        "Open"]
+       [:button {:type     "button"
+                 :on-click (partial sonclick @val)}
+        "Send"]
+       [:button {:type "button" :on-click conclick} "Close"]
+       [message-list]])))
 
 (defn start []
   (r/render-component
