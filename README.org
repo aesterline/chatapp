@@ -19,6 +19,7 @@
    - Understand what tests should be written and write them
    - Deploy
    - Add persistence
+   - Add typing notification
 
 ** Resources
 
@@ -26,6 +27,10 @@
 
     - [[http://lukevanderhart.com/2011/09/30/using-javascript-and-clojurescript.html][http://lukevanderhart.com/2011/09/30/using-javascript-and-clojurescript.html]]
     - [[http://www.spacjer.com/blog/2014/09/12/clojurescript-javascript-interop/][http://www.spacjer.com/blog/2014/09/12/clojurescript-javascript-interop/]]
+
+*** Google Closure
+
+    - https://github.com/clojure/clojurescript/wiki/Google-Closure-Library
 
 *** ClojureScript Development Environment
 
@@ -37,6 +42,7 @@
 
     - [[https://github.com/reagent-project/reagent][https://github.com/reagent-project/reagent]]
     - [[https://github.com/jonase/reagent-tutorial][https://github.com/jonase/reagent-tutorial]]
+    - https://github.com/Day8/re-frame (Great description of how reagent works)
 
 *** HTTP Kit
 
