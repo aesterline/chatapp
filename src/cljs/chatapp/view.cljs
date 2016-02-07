@@ -2,7 +2,7 @@
   (:require [re-frame.core :as re-frame]))
 
 (defn message [message]
-  [:li {:class "list-group-item"}
+  [:li {:class "list-group-item" :key (:key message)}
    (:message message)])
 
 (defn message-list []

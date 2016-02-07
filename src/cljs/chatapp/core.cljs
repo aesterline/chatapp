@@ -8,18 +8,20 @@
             [re-frame.core :as re-frame]))
 
 (def app-state (r/atom {}))
+(def message-id (atom 1))
 
 ;; Handlers
 (re-frame/register-handler
  :initialise-db
  (fn [_ _]
-   {:messages      [{:style "init" :message "initial message"}]
+   {:messages      [{:key 0 :style "init" :message "initial message"}]
     :message-input {:text "" :focus true}}))
 
 (re-frame/register-handler
  :add-message
  (fn [db [_ message]]
-   (update-in db [:messages] conj message)))
+   (let [keyed-message (assoc message :key (swap! message-id inc))]
+     (update-in db [:messages] conj keyed-message))))
 
 (re-frame/register-handler
  :send-message
