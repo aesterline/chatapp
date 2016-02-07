@@ -1,6 +1,9 @@
 * chatapp
   Simple chat application created in order to learn ClojureScript.
 
+  #+CAPTION: Build Status
+  [[https://travis-ci.org/aesterline/chatapp.svg?branch=master]]
+
 ** Usage
 
   To run, start the server process with the following command.
@@ -14,11 +17,11 @@
 ** What's Next
 
    - Style the chat window
-   - Set up a build on [[https://travis-ci.org/][Travis CI]]
    - Understand what tests should be written and write them
    - Deploy
    - Add persistence
    - Add typing notification
+   - +Set up a build on [[https://travis-ci.org/][Travis CI]]+
    - +Allow additional clients to connect+
 
 ** Resources
