@@ -13,8 +13,8 @@
 (re-frame/register-handler
  :initialise-db
  (fn [_ _]
-   {:messages     [{:style "init" :message "initial message"}]
-    :message-text ""}))
+   {:messages      [{:style "init" :message "initial message"}]
+    :message-input {:text "" :focus true}}))
 
 (re-frame/register-handler
  :add-message
@@ -25,21 +25,22 @@
  :send-message
  (fn [db _]
    (let [uri     (str "http://" (.-host js/location) "/message")
-         message (:message-text db)]
+         message (get-in db [:message-input :text])]
      (http/post uri {:json-params {:text message}})
-     (re-frame/dispatch [:add-message {:style "sent" :message (str ">>> " message)}]))
+     (re-frame/dispatch [:add-message {:style "sent" :message (str ">>> " message)}])
+     (re-frame/dispatch [:message-input-text ""]))
    db))
 
 (re-frame/register-handler
- :new-message-text
+ :message-input-text
  (fn [db [_ message-text]]
-   (assoc db :message-text message-text)))
+   (assoc-in db [:message-input :text] message-text)))
 
 ;; Subscriptions
 (re-frame/register-sub
- :message-text
+ :message-input
  (fn [db _]
-   (reaction (:message-text @db))))
+   (reaction (:message-input @db))))
 
 (re-frame/register-sub
  :messages

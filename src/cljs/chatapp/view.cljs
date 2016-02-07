@@ -15,15 +15,15 @@
            (message m))]]])))
 
 (defn message-input []
-  (let [val (re-frame/subscribe [:message-text])]
+  (let [input (re-frame/subscribe [:message-input])]
     [:div {:class "row"}
      [:div {:class "col-lg-6"}
       [:div {:class "input-group"}
        [:input {:type        "text"
-                :value       @val
+                :value       (:text @input)
                 :placeholder "Enter text to reverse!"
                 :class       "form-control"
-                :on-change   #(re-frame/dispatch [:new-message-text (-> % .-target .-value)])}]
+                :on-change   #(re-frame/dispatch [:message-input-text (-> % .-target .-value)])}]
        [:span {:class "input-group-btn"}
         [:button {:type     "button"
                   :class    "btn btn-default"
