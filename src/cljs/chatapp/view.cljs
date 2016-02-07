@@ -17,14 +17,13 @@
 (defn message-input []
   (let [input (re-frame/subscribe [:message-input])]
     (fn []
-      [:input {:type        "text"
-               :value       (:text @input)
-               :placeholder "Enter text to reverse!"
-               :class       "form-control"
-               :auto-focus  true
-               :on-key-press #(when (= 13 (.-charCode %))
-                                (re-frame/dispatch [:send-message]))
-               :on-change   #(re-frame/dispatch [:message-input-text (-> % .-target .-value)])}])))
+      [:input {:type         "text"
+               :value        (:text @input)
+               :placeholder  "Enter text to reverse!"
+               :class        "form-control"
+               :auto-focus   true
+               :on-key-press #(re-frame/dispatch [:message-input-key-press (.-charCode %)])
+               :on-change    #(re-frame/dispatch [:message-input-text (-> % .-target .-value)])}])))
 
 (defn message-composer []
   [:div {:class "row"}

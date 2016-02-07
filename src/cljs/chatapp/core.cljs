@@ -36,6 +36,13 @@
  (fn [db [_ message-text]]
    (assoc-in db [:message-input :text] message-text)))
 
+(re-frame/register-handler
+ :message-input-key-press
+ (fn [db [_ key-code]]
+   (when (= 13 key-code)
+     (re-frame/dispatch [:send-message]))
+   db))
+
 ;; Subscriptions
 (re-frame/register-sub
  :message-input
