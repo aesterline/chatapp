@@ -21,6 +21,7 @@
    - Deploy
    - Add persistence
    - Add typing notification
+   - Use a schema to validate app-state
    - +Set up a build on [[https://travis-ci.org/][Travis CI]]+
    - +Allow additional clients to connect+
 
