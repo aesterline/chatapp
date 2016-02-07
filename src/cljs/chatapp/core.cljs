@@ -18,7 +18,6 @@
 (re-frame/register-handler
  :add-message
  (fn [db [_ message]]
-   (.log js/console (clj->js message))
    (update-in db [:messages] conj message)))
 
 (re-frame/register-handler
@@ -32,7 +31,6 @@
 (re-frame/register-handler
  :new-message-text
  (fn [db [_ message-text]]
-   (.log js/console message-text)
    (assoc db :message-text message-text)))
 
 ;; Subscriptions
