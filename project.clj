@@ -3,13 +3,15 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[compojure "1.4.0"]
+  :dependencies [[cljs-http "0.1.39"]
+                 [compojure "1.4.0"]
                  [environ "1.0.2"]
                  [http-kit "2.1.18"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228" :scope "provided"]
                  [reagent "0.6.0-alpha"]
-                 [ring/ring-core "1.4.0"]]
+                 [ring/ring-core "1.4.0"]
+                 [ring/ring-json "0.4.0"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]
             [lein-pprint "1.1.1"]]

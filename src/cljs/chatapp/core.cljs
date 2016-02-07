@@ -1,5 +1,7 @@
 (ns chatapp.core
-  (:require [reagent.core :as r]))
+  (:require [cljs-http.client :as http]
+            [goog.dom :as dom]
+            [reagent.core :as r]))
 
 (def app-state (r/atom {:messages [{:style "init" :message "initial message"}]}))
 
@@ -22,7 +24,7 @@
 (def socket (atom nil))
 
 (defn connect []
-  (let [uri       (str "ws://" (.-host js/location) "/ws")
+  (let [uri       (str "ws://" (.-host js/location) "/events")
         websocket (js/WebSocket. uri)]
     (set! (.-onerror websocket) onerror)
     (set! (.-onopen websocket) onopen)
@@ -32,8 +34,9 @@
     (reset! socket websocket)))
 
 (defn sonclick [text event]
-  (.send @socket text)
-  (add-message! "sent" (str ">>> " text)))
+  (let [uri (str "http://" (.-host js/location) "/message")]
+    (http/post uri {:json-params {:text text}})
+    (add-message! "sent" (str ">>> " text))))
 
 (defn conclick [event]
   (.close @socket 1000 "Close button clicked"))
@@ -67,5 +70,5 @@
    [:div
     [:h1 "WebSocket Demo"]
     [demo]]
-   (.getElementById js/document "root"))
+   (dom/getElement "root"))
   (connect))

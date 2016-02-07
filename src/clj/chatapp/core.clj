@@ -2,28 +2,31 @@
   (:require
    [compojure.route          :as route]
    [environ.core             :refer (env)]
-   [compojure.core           :refer (ANY GET defroutes)]
+   [compojure.core           :refer (ANY GET POST defroutes)]
    [ring.util.response       :refer (response redirect content-type)]
+   [ring.middleware.json :as json]
    [org.httpkit.server :as server])
   (:gen-class))
 
 (def clients (atom #{}))
 
-(defn- message-received [msg]
+(defn- send-message [msg]
   (doseq [client @clients]
-    (server/send! client (apply str (reverse msg)))))
+    (server/send! client msg)))
 
 (defn handler [request]
   (server/with-channel request channel
     (swap! clients conj channel)
-    (server/on-close channel   (fn [status] (swap! clients disj channel)))
-    (server/on-receive channel (fn [data] ;; echo it back
-                                 (future
-                                   (Thread/sleep 5000)
-                                   (message-received data))))))
+    (server/on-close channel   (fn [status] (swap! clients disj channel)))))
+
+(defn create-message [request]
+  (let [body (get-in request [:body :text])]
+    (send-message (apply str (reverse body)))
+    (response "Worked")))
 
 (defroutes routes
-  (GET "/ws" [] handler)
+  (POST "/message" [] (json/wrap-json-body create-message {:keywords? true :bigdecimals? true}))
+  (GET "/events" [] handler)
   (GET "/" {c :context} (redirect (str c "/index.html")))
   (route/resources "/"))
 
