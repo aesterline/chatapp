@@ -2,6 +2,7 @@
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [cljs-http.client :as http]
             [chatapp.websocket :as websocket]
+            [chatapp.view :as view]
             [goog.dom :as dom]
             [reagent.core :as r]
             [re-frame.core :as re-frame]))
@@ -46,43 +47,9 @@
    (reaction (:messages @db))))
 
 ;; Other stuff
-(defn message [message]
-  [:li {:class "list-group-item"}
-   (:message message)])
-
-(defn message-list []
-  (let [messages (re-frame/subscribe [:messages])]
-    (fn []
-      [:ul {:class "list-group"}
-       (for [m @messages]
-         (message m))])))
-
-(defn demo []
-  (let [val (re-frame/subscribe [:message-text])]
-    (fn []
-      [:div {:class "container-fluid"}
-       [:div
-        [message-list]]
-       [:div {:class "row"}
-        [:div {:class "col-lg-6"}
-         [:div {:class "input-group"}
-          [:input {:type        "text"
-                   :value       @val
-                   :placeholder "Enter text to reverse!"
-                   :class       "form-control"
-                   :on-change   #(re-frame/dispatch [:new-message-text (-> % .-target .-value)])}]
-          [:span {:class "input-group-btn"}
-           [:button {:type     "button"
-                     :class    "btn btn-default"
-                     :on-click #(re-frame/dispatch [:send-message])}
-            "Send"]]
-          ]]]])))
-
 (defn start []
   (re-frame/dispatch-sync [:initialise-db])
   (r/render-component
-   [:div
-    [:h1 "WebSocket Demo"]
-    [demo]]
+   view/chat-ui
    (dom/getElement "root"))
   (websocket/connect))
