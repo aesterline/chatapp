@@ -1,8 +1,6 @@
 (ns chatapp.websocket
   (:require [re-frame.core :as re-frame]))
 
-(def socket (atom nil))
-
 (defn- onmessage [event]
   (re-frame/dispatch [:add-message {:style "received" :message (str "<<< " (.-data event))}]))
 
@@ -22,6 +20,4 @@
     (set! (.-onerror websocket) onerror)
     (set! (.-onopen websocket) onopen)
     (set! (.-onmessage websocket) onmessage)
-    (set! (.-onclose websocket) onclose)
-
-    (reset! socket websocket)))
+    (set! (.-onclose websocket) onclose)))
