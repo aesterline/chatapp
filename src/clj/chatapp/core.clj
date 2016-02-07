@@ -3,8 +3,8 @@
    [compojure.route          :as route]
    [environ.core             :refer (env)]
    [compojure.core           :refer (ANY GET POST defroutes)]
-   [ring.util.response       :refer (response redirect content-type)]
    [ring.middleware.json :as json]
+   [ring.util.response       :refer (response redirect content-type)]
    [org.httpkit.server :as server])
   (:gen-class))
 
