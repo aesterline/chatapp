@@ -26,7 +26,8 @@
    (let [uri     (str "http://" (.-host js/location) "/message")
          message (:message-text db)]
      (http/post uri {:json-params {:text message}})
-     (re-frame/dispatch [:add-message {:style "sent" :message (str ">>> " message)}]))))
+     (re-frame/dispatch [:add-message {:style "sent" :message (str ">>> " message)}]))
+   db))
 
 (re-frame/register-handler
  :new-message-text
@@ -60,14 +61,20 @@
 (defn demo []
   (let [val (re-frame/subscribe [:message-text])]
     (fn []
-      [:div
-       [:input {:type        "text"
-                :value       @val
-                :placeholder "Enter text to reverse!"
-                :on-change   #(re-frame/dispatch [:new-message-text (-> % .-target .-value)])}]
-       [:button {:type     "button"
-                 :on-click #(re-frame/dispatch [:send-message])}
-        "Send"]
+      [:div {:class "row"}
+       [:div {:class "col-lg-6"}
+        [:div {:class "input-group"}
+         [:input {:type        "text"
+                  :value       @val
+                  :placeholder "Enter text to reverse!"
+                  :class       "form-control"
+                  :on-change   #(re-frame/dispatch [:new-message-text (-> % .-target .-value)])}]
+         [:span {:class "input-group-btn"}
+          [:button {:type     "button"
+                    :class    "btn btn-default"
+                    :on-click #(re-frame/dispatch [:send-message])}
+           "Send"]]
+         ]]
        [message-list]])))
 
 (defn start []
