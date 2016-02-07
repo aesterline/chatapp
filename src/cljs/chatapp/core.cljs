@@ -14,7 +14,7 @@
 (re-frame/register-handler
  :initialise-db
  (fn [_ _]
-   {:messages      [{:key 0 :style "init" :message "initial message"}]
+   {:messages      []
     :message-input {:text "" :focus true}}))
 
 (re-frame/register-handler
