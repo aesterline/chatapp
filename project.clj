@@ -10,6 +10,7 @@
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228" :scope "provided"]
                  [reagent "0.6.0-alpha"]
+                 [re-frame "0.7.0-alpha-2"]
                  [ring/ring-core "1.4.0"]
                  [ring/ring-json "0.4.0"]]
 

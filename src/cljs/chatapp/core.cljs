@@ -1,25 +1,64 @@
 (ns chatapp.core
+  (:require-macros [reagent.ratom :refer [reaction]])
   (:require [cljs-http.client :as http]
             [goog.dom :as dom]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [re-frame.core :as re-frame]))
 
-(def app-state (r/atom {:messages [{:style "init" :message "initial message"}]}))
+(def app-state (r/atom {}))
 
-(defn add-message! [style message]
-  (swap! app-state (fn [state] (update-in state [:messages] conj {:style style :message message}))))
+;; Handlers
+(re-frame/register-handler
+ :initialise-db
+ (fn [_ _]
+   {:messages     [{:style "init" :message "initial message"}]
+    :message-text ""}))
+
+(re-frame/register-handler
+ :add-message
+ (fn [db [_ message]]
+   (.log js/console (clj->js message))
+   (update-in db [:messages] conj message)))
+
+(re-frame/register-handler
+ :send-message
+ (fn [db _]
+   (let [uri     (str "http://" (.-host js/location) "/message")
+         message (:message-text db)]
+     (http/post uri {:json-params {:text message}})
+     (re-frame/dispatch [:add-message {:style "sent" :message (str ">>> " message)}]))))
+
+(re-frame/register-handler
+ :new-message-text
+ (fn [db [_ message-text]]
+   (.log js/console message-text)
+   (assoc db :message-text message-text)))
+
+;; Subscriptions
+(re-frame/register-sub
+ :message-text
+ (fn [db _]
+   (reaction (:message-text @db))))
+
+(re-frame/register-sub
+ :messages
+ (fn [db _]
+   (reaction (:messages @db))))
+
+;; Other stuff
 
 (defn onmessage [event]
-  (add-message! "received" (str "<<< " (.-data event))))
+  (re-frame/dispatch [:add-message {:style "received" :message (str "<<< " (.-data event))}]))
 
 (defn onerror [error]
-  (add-message! "error" error))
+  (re-frame/dispatch [:add-message {:style "error" :message error}]))
 
 (defn onopen [event]
   (let [current-target (.-currentTarget event)]
-    (add-message! "opened" (str "Connected to " (.-url current-target)))))
+    (re-frame/dispatch [:add-message {:style "opened" :message (str "Connected to " (.-url current-target))}])))
 
 (defn onclose [event]
-  (add-message! "closed" (str "Disconnected: " (.-code event) " " (.-reason event))))
+  (re-frame/dispatch [:add-message {:style "closed" :message (str "Disconnected: " (.-code event) " " (.-reason event))}]))
 
 (def socket (atom nil))
 
@@ -33,11 +72,6 @@
 
     (reset! socket websocket)))
 
-(defn sonclick [text event]
-  (let [uri (str "http://" (.-host js/location) "/message")]
-    (http/post uri {:json-params {:text text}})
-    (add-message! "sent" (str ">>> " text))))
-
 (defn conclick [event]
   (.close @socket 1000 "Close button clicked"))
 
@@ -47,25 +81,28 @@
     (:message message)]])
 
 (defn message-list []
-  [:div
-   (for [m (:messages @app-state)]
-     (message m))])
+  (let [messages (re-frame/subscribe [:messages])]
+    (fn []
+      [:div
+       (for [m @messages]
+         (message m))])))
 
 (defn demo []
-  (let [val (r/atom "")]
+  (let [val (re-frame/subscribe [:message-text])]
     (fn []
       [:div
        [:input {:type        "text"
                 :value       @val
                 :placeholder "Enter text to reverse!"
-                :on-change   #(reset! val (-> % .-target .-value))}]
+                :on-change   #(re-frame/dispatch [:new-message-text (-> % .-target .-value)])}]
        [:button {:type     "button"
-                 :on-click (partial sonclick @val)}
+                 :on-click #(re-frame/dispatch [:send-message])}
         "Send"]
        [:button {:type "button" :on-click conclick} "Close"]
        [message-list]])))
 
 (defn start []
+  (re-frame/dispatch-sync [:initialise-db])
   (r/render-component
    [:div
     [:h1 "WebSocket Demo"]
