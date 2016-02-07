@@ -1,6 +1,7 @@
 (ns chatapp.core
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [cljs-http.client :as http]
+            [chatapp.websocket :as websocket]
             [goog.dom :as dom]
             [reagent.core :as r]
             [re-frame.core :as re-frame]))
@@ -46,35 +47,6 @@
    (reaction (:messages @db))))
 
 ;; Other stuff
-
-(defn onmessage [event]
-  (re-frame/dispatch [:add-message {:style "received" :message (str "<<< " (.-data event))}]))
-
-(defn onerror [error]
-  (re-frame/dispatch [:add-message {:style "error" :message error}]))
-
-(defn onopen [event]
-  (let [current-target (.-currentTarget event)]
-    (re-frame/dispatch [:add-message {:style "opened" :message (str "Connected to " (.-url current-target))}])))
-
-(defn onclose [event]
-  (re-frame/dispatch [:add-message {:style "closed" :message (str "Disconnected: " (.-code event) " " (.-reason event))}]))
-
-(def socket (atom nil))
-
-(defn connect []
-  (let [uri       (str "ws://" (.-host js/location) "/events")
-        websocket (js/WebSocket. uri)]
-    (set! (.-onerror websocket) onerror)
-    (set! (.-onopen websocket) onopen)
-    (set! (.-onmessage websocket) onmessage)
-    (set! (.-onclose websocket) onclose)
-
-    (reset! socket websocket)))
-
-(defn conclick [event]
-  (.close @socket 1000 "Close button clicked"))
-
 (defn message [message]
   [:div
    [:span {:class (:style message)}
@@ -98,7 +70,6 @@
        [:button {:type     "button"
                  :on-click #(re-frame/dispatch [:send-message])}
         "Send"]
-       [:button {:type "button" :on-click conclick} "Close"]
        [message-list]])))
 
 (defn start []
@@ -108,4 +79,4 @@
     [:h1 "WebSocket Demo"]
     [demo]]
    (dom/getElement "root"))
-  (connect))
+  (websocket/connect))
