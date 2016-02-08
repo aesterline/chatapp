@@ -9,6 +9,7 @@
                  [http-kit "2.1.18"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228" :scope "provided"]
+                 [prismatic/schema "1.0.4"]
                  [reagent "0.6.0-alpha"]
                  [re-frame "0.7.0-alpha-2"]
                  [ring/ring-core "1.4.0"]
