@@ -16,13 +16,14 @@
 
 ** What's Next
 
-   - Use a schema to validate app-state
    - Understand what tests should be written and write them
    - Deploy
    - Add persistence
    - Add typing notification
    - Add current number of users information
    - Style the window better
+   - The server should assign message ids
+   - +Use a schema to validate app-state+
    - +Style the chat window+
    - +Set up a build on [[https://travis-ci.org/][Travis CI]]+
    - +Allow additional clients to connect+
