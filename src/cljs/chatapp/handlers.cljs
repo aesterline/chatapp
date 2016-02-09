@@ -4,7 +4,7 @@
             [re-frame.core :as re-frame]
             [schema.core :as schema]))
 
-(def message-id (atom 1))
+(def event-id (atom 1))
 
 (defn check-and-throw
   "throw an exception if db doesn't match the schema."
@@ -19,15 +19,15 @@
  :initialise-db
  check-schema-middleware
  (fn [_ _]
-   {:messages      []
+   {:events        []
     :message-input {:text "" :focus true}}))
 
 (re-frame/register-handler
- :add-message
+ :add-event
  check-schema-middleware
- (fn [db [_ message]]
-   (let [keyed-message (assoc message :key (swap! message-id inc))]
-     (update-in db [:messages] conj keyed-message))))
+ (fn [db [_ event]]
+   (let [keyed-event (assoc event :key (swap! event-id inc))]
+     (update-in db [:events] conj keyed-event))))
 
 (re-frame/register-handler
  :send-message
@@ -36,7 +36,7 @@
    (let [uri     (str "http://" (.-host js/location) "/message")
          message (get-in db [:message-input :text])]
      (http/post uri {:json-params {:text message}})
-     (re-frame/dispatch [:add-message {:type "debug" :message (str ">>> " message)}])
+     (re-frame/dispatch [:add-event {:type "debug" :message (str ">>> " message)}])
      (re-frame/dispatch [:message-input-text ""]))
    db))
 

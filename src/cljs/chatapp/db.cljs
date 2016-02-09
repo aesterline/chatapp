@@ -1,13 +1,13 @@
 (ns chatapp.db
   (:require [schema.core :as s :include-macros true]))
 
-(def message-id s/Int)
+(def event-id s/Int)
 
-(def message
+(def event
   {:type    (s/enum "debug" "message")
    :message s/Str
-   :key     message-id})
+   :key     event-id})
 
 (def schema
-  {:messages      [message]
+  {:events        [event]
    :message-input {:text s/Str :focus s/Bool}})
