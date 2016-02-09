@@ -36,7 +36,7 @@
    (let [uri     (str "http://" (.-host js/location) "/message")
          message (get-in db [:message-input :text])]
      (http/post uri {:json-params {:text message}})
-     (re-frame/dispatch [:add-message {:style "sent" :message (str ">>> " message)}])
+     (re-frame/dispatch [:add-message {:type "debug" :message (str ">>> " message)}])
      (re-frame/dispatch [:message-input-text ""]))
    db))
 

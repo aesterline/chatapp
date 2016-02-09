@@ -4,7 +4,7 @@
 (def message-id s/Int)
 
 (def message
-  {:style   s/Str
+  {:type    (s/enum "debug" "message")
    :message s/Str
    :key     message-id})
 

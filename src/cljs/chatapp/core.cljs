@@ -17,7 +17,8 @@
 (re-frame/register-sub
  :messages
  (fn [db _]
-   (reaction (:messages @db))))
+   (let [messages (reaction (:messages @db))]
+     (reaction (filter #(= "message" (:type %)) @messages)))))
 
 ;; Other stuff
 (defn start []
