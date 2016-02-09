@@ -51,6 +51,14 @@
     - [[https://github.com/jonase/reagent-tutorial][https://github.com/jonase/reagent-tutorial]]
     - https://github.com/Day8/re-frame (Great description of how reagent works)
 
+*** Schema
+
+    - https://github.com/plumatic/schema
+
+*** Bootstrap
+
+    - http://getbootstrap.com/
+
 *** HTTP Kit
 
     - [[http://www.http-kit.org/][http://www.http-kit.org/]]
