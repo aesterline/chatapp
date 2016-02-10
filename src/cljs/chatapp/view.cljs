@@ -9,7 +9,7 @@
   (let [messages (re-frame/subscribe [:messages])]
     (fn []
       [:div {:class "row"}
-       [:div {:class "col-md-6"}
+       [:div {:class "col-sm-6"}
         [:ul {:class "list-group"}
          (for [m @messages]
            (message m))]]])))
@@ -27,7 +27,7 @@
 
 (defn message-composer []
   [:div {:class "row"}
-   [:div {:class "col-md-6"}
+   [:div {:class "col-sm-6"}
     [:div {:class "input-group"}
      [message-input]
      [:span {:class "input-group-btn"}
@@ -37,9 +37,11 @@
        "Send"]]]]])
 
 (defn chat-ui []
-  [:div {:class "container-fluid"}
-   [:div {:class "row"}
-    [:div {:class "col-md-6"}
+  [:div {:class "container pink"}
+   [:div {:class "row green"}
+    [:div {:class "col-md-12"}
      [:h1 "ChatApp"]]]
-   [message-list]
-   [message-composer]])
+   [:div {:class "row red"}
+    [:div {:class "col-md-9"}
+     [message-list]
+     [message-composer]]]])
