@@ -1,6 +1,14 @@
-.fill {
-    min-height: 100%;
-    height: 100%;
+html,body{height:100%;}
+
+.container {
+    min-height:100%;
+    overflow: hidden;
+}
+
+.fill{
+    position: fixed;
+    bottom: 0px;
+    padding-bottom: 10px;
 }
 
 .green {
