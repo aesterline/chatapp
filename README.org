@@ -55,9 +55,10 @@
 
     - https://github.com/plumatic/schema
 
-*** Bootstrap
+*** CSS
 
     - http://getbootstrap.com/
+    - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
 *** HTTP Kit
 
